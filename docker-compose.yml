@@ -1,0 +1,83 @@
+version: "3.8"
+
+services:
+    database:
+        image: "postgres"
+        ports:
+            - 5433:5432
+        env_file:
+            - database.env
+        volumes:
+            - database-data:/var/lib/postgresql/data/ # persist data even if container shuts down
+
+    auth:
+        build:
+            context: ./auth
+            target: development
+        volumes:
+            - ./auth:/src
+            - /src/node_modules
+        command: npm start
+        ports:
+            - "8000:8000"
+        environment:
+            NODE_ENV: development
+            DEBUG: src:*
+        env_file:
+            - ormconfig.local.env
+        depends_on:
+            - database
+    
+    article:
+        build:
+            context: ./article
+            target: development
+        volumes:
+            - ./article:/src
+            - /src/node_modules
+        command: npm start
+        ports:
+            - "8000:8000"
+        environment:
+            NODE_ENV: development
+            DEBUG: src:*
+        env_file:
+            - ormconfig.local.env
+        depends_on:
+            - database
+
+    panier:
+        build:
+            context: ./panier
+            target: development
+        volumes:
+            - ./panier:/src
+            - /src/node_modules
+        command: npm start
+        ports:
+            - "8000:8000"
+        environment:
+            NODE_ENV: development
+            DEBUG: src:*
+        env_file:
+            - ormconfig.local.env
+        depends_on:
+            - database
+
+    apigateway:
+        build:
+            context: ./APIGateway
+            target: development
+        volumes:
+            - ./APIGateway:/src
+            - /src/node_modules
+        command: npm start
+        ports:
+            - "8000:8000"
+        environment:
+            NODE_ENV: development
+            DEBUG: src:*
+        env_file:
+            - ormconfig.local.env
+        depends_on:
+            - database
