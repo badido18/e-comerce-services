@@ -17,7 +17,7 @@ services:
         volumes:
             - ./auth:/src
             - /src/node_modules
-        command: npm start
+        command: npm run start:dev
         ports:
             - "8000:8000"
         environment:
@@ -37,7 +37,7 @@ services:
             - /src/node_modules
         command: npm start
         ports:
-            - "8000:8000"
+            - "8001:8000"
         environment:
             NODE_ENV: development
             DEBUG: src:*
@@ -55,7 +55,7 @@ services:
             - /src/node_modules
         command: npm start
         ports:
-            - "8000:8000"
+            - "8002:8000"
         environment:
             NODE_ENV: development
             DEBUG: src:*
@@ -73,7 +73,7 @@ services:
             - /src/node_modules
         command: npm start
         ports:
-            - "8000:8000"
+            - "8003:8000"
         environment:
             NODE_ENV: development
             DEBUG: src:*
@@ -81,3 +81,7 @@ services:
             - ormconfig.local.env
         depends_on:
             - database
+
+volumes:
+    database-data: # named volumes can be managed easier using docker-compose
+              
