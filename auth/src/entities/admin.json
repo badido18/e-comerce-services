@@ -1,0 +1,31 @@
+{
+    "name": "admin",
+    "columns": [
+        {
+            "name": "id",
+            "type": "int",
+            "primary": true,
+            "generated": true
+        },
+        {
+            "name": "nom",
+            "type": "varchar"
+        },
+        {
+            "name": "prenom",
+            "type": "varchar"
+        },
+        {
+            "name": "num_telephone",
+            "type": "varchar"
+        },
+        {
+            "name": "adresse",
+            "type": "varchar"
+        },
+        {
+            "name": "motDePasse",
+            "type": "varchar"
+        }
+    ]
+}

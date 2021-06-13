@@ -7,7 +7,16 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 
-createConnection()
+createConnection({
+    "type": "postgres", 
+    "host": "database", 
+    "port": 5432, 
+    "username": "user", 
+    "password": "password", 
+    "database": "database",
+    "synchronize": true, 
+    "logging": false,
+})
 .then(() => {
     app.listen(8000, () => {
         console.log("server started.")
