@@ -1,0 +1,35 @@
+{
+    "name": "article",
+    "columns": [
+        {
+            "name": "id",
+            "type": "int",
+            "primary": true,
+            "generated": true
+        },
+        {
+            "name": "title",
+            "type": "varchar"
+        },
+        {
+            "name": "description",
+            "type": "varchar"
+        },
+        {
+            "name": "imageurl",
+            "type": "varchar"
+        },
+        {
+            "name": "type",
+            "type": "varchar"
+        },
+        {
+            "name": "prix",
+            "type": "varchar"
+        },
+        {
+            "name": "quantity",
+            "type": "varchar"
+        }
+    ]
+}

@@ -1,5 +1,5 @@
 const express = require("express")
-const {createConnection} = require("typeorm")
+const { createConnection, EntitySchema } = require("typeorm")
 const cors = require("cors")
 
 const app = express()
@@ -16,8 +16,14 @@ createConnection({
     "database": "database",
     "synchronize": true, 
     "logging": false, 
+    entities: [
+        new EntitySchema(require("./entities/article.json"))
+    ]
 })
 .then(() => {
+    const router = require("./routes")
+    app.use("/", router)
+
     app.listen(8000, () => {
         console.log("server started.")
     })
