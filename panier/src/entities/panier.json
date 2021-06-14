@@ -1,0 +1,19 @@
+{
+    "name": "panier",
+    "columns": [
+        {
+            "name": "id",
+            "type": "int",
+            "primary": true,
+            "generated": true
+        },
+        {
+            "name": "userid",
+            "type": "varchar"
+        },
+        {
+            "name": "articles",
+            "type": "simple-array"
+        }
+    ]
+}
