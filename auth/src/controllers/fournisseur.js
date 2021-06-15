@@ -27,24 +27,23 @@ function getFournisseur(req, res) {
 }
 
 async function postFournisseur(req, res) {
-    const { NomFournisseur, PrenomFournisseur, Num_telephone, Adresse, MotDePasse } = req.body
+    const { nom, prenom, num_telephone, adresse, motDePasse } = req.body
     
     try {
         const salt = await bcrypt.genSalt(10)
-        const password = await bcrypt.hash(MotDePasse, salt)
+        const password = await bcrypt.hash(motDePasse, salt)
     
-        const fournisseur = Fournisseur.create({
-            NomFournisseur,
-            PrenomFournisseur,
-            Num_telephone,
-            Adresse,
-            MotDePasse: password
+        const user = await Fournisseur.save({
+            nom,
+            prenom,
+            num_telephone,
+            adresse,
+            motDePasse: password
         })
-        const user = await Fournisseur.save(fournisseur)
 
-        const token = generateToken(u)
+        const token = generateToken({ id: user.id })
 
-        res.headers.auth = token
+        res.header("auth", token)
         res.send(success("user cree avec succes", user))
     } catch (err) {
         res.send(error(err.message));
@@ -72,21 +71,26 @@ function putFournisseur(req, res) {
 }
 
 function signIn(req, res) {
-    const { Num_telephone, MotDePasse } = req.body;
+    const { num_telephone, motDePasse } = req.body;
 
-    if (!Num_telephone || !MotDePasse) {
+    if (!num_telephone || !motDePasse) {
         res.status(400).send(error("invalid payload: " + JSON.stringify(req.body)))
     }
 
-    Fournisseur.find({ Num_telephone })
+    Fournisseur.find({ num_telephone })
     .then(user => {
-        const isMatch = bcrypt.compareSync(MotDePasse, user.MotDePasse)
+        if (user.length === 0) {
+            res.send(error("incorrect num_tel."))
+            return
+        }
+
+        const isMatch = bcrypt.compareSync(motDePasse, user[0].motDePasse)
         if (!isMatch) {
             res.send(error("incorrect password."))
         } else {
-            const token = generateToken(u)
+            const token = generateToken({ id: user.id })
 
-            res.headers.auth = token
+            res.header("auth", token)
             res.send(success("login success"))
         }
     })

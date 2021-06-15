@@ -1,8 +1,6 @@
 const { getRepository } = require("typeorm")
 const bcrypt = require('bcrypt')
 
-const Admin = getRepository('Admin')
-
 const generateToken = require('../lib/generateToken')
 const { error, success } = require("../lib/response")
 
@@ -44,7 +42,7 @@ async function postAdmin(req, res) {
         })
         .then(admin => {
             const token = generateToken({ id: admin.id })
-            console.log(res)
+            
             res.header("auth", token)
             res.send(success("user cree avec succes", admin))
         })
@@ -69,7 +67,7 @@ function deleteAdmin(req, res) {
 }
 
 function putAdmin(req, res) {
-    Admin.update(req.body)
+    Admin.update({ ...req.body, id: req.params.id })
     .then(admins => {
         res.send(success("admin modifie avec succes", admins))
     })
@@ -79,26 +77,32 @@ function putAdmin(req, res) {
 }
 
 function signIn(req, res) {
-    const { Num_telephone, MotDePasse } = req.body;
+    const { num_telephone, motDePasse } = req.body;
 
-    if (!Num_telephone || !MotDePasse) {
+    if (!num_telephone || !motDePasse) {
         res.status(400).send(error("invalid payload: " + JSON.stringify(req.body)))
     }
 
-    Admin.find({ Num_telephone })
+    Admin.find({ num_telephone })
     .then(user => {
-        const isMatch = bcrypt.compareSync(MotDePasse, user.MotDePasse)
+        if (user.length === 0) {
+            res.send(error("no account found."))
+            return
+        }
+
+        const isMatch = bcrypt.compareSync(motDePasse, user[0].motDePasse)
         if (!isMatch) {
             res.send(error("incorrect password."))
         } else {
-            const token = generateToken(u)
+            const token = generateToken({ id: user[0].id })
 
-            res.headers.auth = token
+            res.header("auth", token)
             res.send(success("login success"))
         }
     })
     .catch(err => {
-        res.send(error("incorrect email"))
+        console.log(err)
+        res.send(error("incorrect num tel"))
     })
 }
 
@@ -107,5 +111,6 @@ module.exports = {
     getAdmin,
     postAdmin,
     deleteAdmin,
-    putAdmin
+    putAdmin,
+    signIn
 }
