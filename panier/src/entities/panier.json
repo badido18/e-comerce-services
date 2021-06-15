@@ -1,19 +1,18 @@
 {
-    "name": "panier",
-    "columns": [
-        {
-            "name": "id",
+    "name": "Panier",
+    "columns": {
+        "id" : {
             "type": "int",
             "primary": true,
             "generated": true
         },
+        "userid" :
         {
-            "name": "userid",
             "type": "varchar"
         },
+        "articles" :
         {
-            "name": "articles",
             "type": "simple-array"
         }
-    ]
+    }
 }

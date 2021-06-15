@@ -1,6 +1,8 @@
 const { getRepository } = require("typeorm")
 const bcrypt = require('bcrypt')
 
+const Admin = getRepository('Admin')
+
 const generateToken = require('../lib/generateToken')
 const { error, success } = require("../lib/response")
 
