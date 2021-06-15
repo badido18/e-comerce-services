@@ -1,35 +1,34 @@
 {
-    "name": "article",
-    "columns": [
-        {
-            "name": "id",
+    "name": "Article",
+    "columns": {
+        "id" : {
             "type": "int",
             "primary": true,
             "generated": true
         },
+        "title" :
         {
-            "name": "title",
             "type": "varchar"
         },
+        "description" :
         {
-            "name": "description",
             "type": "varchar"
         },
+        "imageurl" :
         {
-            "name": "imageurl",
             "type": "varchar"
         },
+        "type" :
         {
-            "name": "type",
             "type": "varchar"
         },
+        "prix" :
         {
-            "name": "prix",
             "type": "varchar"
         },
+        "quantity" :
         {
-            "name": "quantity",
             "type": "varchar"
         }
-    ]
+    }
 }

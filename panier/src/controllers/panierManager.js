@@ -3,7 +3,6 @@ const { error, success } = require("../lib/response")
 
 const Panier = getRepository('Panier')
 
-const Client = getRepository('Client')
 
 const addArticlePanier = async (req, res) => {
     const { userid } = req.params.userid
@@ -36,9 +35,7 @@ const deleteArticlePanier = async (req, res) => {
 }
 
 const verifExistUser= async id => {
-    return Client.findOne({ id: id })
-    .then(res => true)
-    .catch( err => "client doesn't exist")
+    return true
 }
 
 
