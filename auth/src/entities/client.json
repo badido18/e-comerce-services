@@ -1,31 +1,25 @@
 {
     "name": "Client",
-    "columns": [
-        {
-            "name": "idClient",
+    "columns": {
+        "idClient": {
             "type": "int",
             "primary": true,
             "generated": true
         },
-        {
-            "name": "NomClient",
+        "NomClient": {
             "type": "varchar"
         },
-        {
-            "name": "PrenomClient",
+        "PrenomClient": {
             "type": "varchar"
         },
-        {
-            "name": "Num_telephone",
+        "Num_telephone": {
             "type": "varchar"
         },
-        {
-            "name": "Adresse",
+        "Adresse": {
             "type": "varchar"
         },
-        {
-            "name": "MotDePasse",
+        "MotDePasse": {
             "type": "varchar"
         }
-    ]
+    }
 }

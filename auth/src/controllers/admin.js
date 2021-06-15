@@ -4,6 +4,8 @@ const bcrypt = require('bcrypt')
 const generateToken = require('../lib/generateToken')
 const { error, success } = require("../lib/response")
 
+const Admin = getRepository("admin")
+
 function getAdmins(req, res) {
     Admin.find()
     .then(admins => {
@@ -40,8 +42,8 @@ async function postAdmin(req, res) {
         })
         .then(admin => {
             const token = generateToken({ id: admin.id })
-    
-            res.headers.auth = token
+            console.log(res)
+            res.header("auth", token)
             res.send(success("user cree avec succes", admin))
         })
         .catch(err => {

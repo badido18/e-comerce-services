@@ -1,31 +1,25 @@
 {
     "name": "Fournisseur",
-    "columns": [
-        {
-            "name": "idFournisseur",
+    "columns": {
+        "idFournisseur": {
             "type": "int",
             "primary": true,
             "generated": true
         },
-        {
-            "name": "NomFournisseur",
+        "NomFournisseur": {
             "type": "varchar"
         },
-        {
-            "name": "PrenomFournisseur",
+        "PrenomFournisseur": {
             "type": "varchar"
         },
-        {
-            "name": "Num_telephone",
+        "Num_telephone": {
             "type": "varchar"
         },
-        {
-            "name": "Adresse",
+        "Adresse": {
             "type": "varchar"
         },
-        {
-            "name": "MotDePasse",
+        "MotDePasse": {
             "type": "varchar"
         }
-    ]
+    }
 }
