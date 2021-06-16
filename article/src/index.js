@@ -21,7 +21,7 @@ createConnection({
     ]
 })
 .then(() => {
-    const router = require("./routes")
+    const router = require("./routes/index")
     app.use("/", router)
 
     app.listen(8000, () => {
