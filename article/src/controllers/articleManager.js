@@ -4,10 +4,10 @@ const { error, success } = require("../lib/response")
 const Article = getRepository('Article')
 
 const deleteArticle = async (req, res) => {
-    const { id } = req.params.id;
+    const { id } = req.params;
     Article.delete({ id: id })
-    .then(Articles => {
-        res.send(success("Article supprime avec succes", Articles))
+    .then(ar => {
+        res.send(success("Article supprime avec succes", ar))
     })
     .catch(err => {
         res.send(error(err.message));
@@ -16,10 +16,13 @@ const deleteArticle = async (req, res) => {
 }
 
 const getArticle = async (req, res) => {
-    const { id } = req.params.id;
+    const { id } = req.params;
     Article.findOne({ id : id })
-    .then(Article => {
-            res.send(success(Article))
+    .then(ar  => {
+            if (!!ar)
+                res.send(success("l'article:",ar))
+            else
+                PromiseRejectionEvent.call()
     })
     .catch(err => {
         res.send(error("Article or User doesn't exist"))
@@ -28,20 +31,23 @@ const getArticle = async (req, res) => {
 
 
 const getArticles= async (req, res) => {
-    const { page } = req.params.page;
-    Articles.offset(page).limit(10)
-    .then(Articles => {
-            res.send(success(Articles))
+    const { page } = req.params.page || 0 ;
+    Article.find({
+        skip: page,
+        take : 10
+    })
+    .then( ar => {
+            res.send(success("Liste des articles",ar))
     })
     .catch(err => {
-        res.send(error("Article or User doesn't exist"))
+        res.send(error("Unexpected error"))
     })
 }
 
 const addArticle = async (req, res) => {
-    const { article } = req.body;
-    Article.add({ ...article })
-    .then(Article => {
+    const { title , description, imageurl , type, clothes , prix , quantity } = req.body;
+    Article.insert({ title , description, imageurl , type, clothes , prix , quantity } )
+    .then(ar => {
             res.send(success("Added Succesfully"))
     })
     .catch(err => {
