@@ -8,11 +8,12 @@
         },
         "userid" :
         {
-            "type": "varchar"
+            "type": "int"
         },
         "articles" :
         {
-            "type": "simple-array"
+            "type": "simple-json" ,
+            "nullable" : true
         }
     }
 }

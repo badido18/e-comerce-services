@@ -19,7 +19,10 @@ const getArticle = async (req, res) => {
     const { id } = req.params;
     Article.findOne({ id : id })
     .then(ar  => {
-            res.send(success("l'article'",ar))
+            if (!!ar)
+                res.send(success("l'article:",ar))
+            else
+                PromiseRejectionEvent.call()
     })
     .catch(err => {
         res.send(error("Article or User doesn't exist"))
@@ -44,7 +47,7 @@ const getArticles= async (req, res) => {
 const addArticle = async (req, res) => {
     const { title , description, imageurl , type, clothes , prix , quantity } = req.body;
     Article.insert({ title , description, imageurl , type, clothes , prix , quantity } )
-    .then(Article => {
+    .then(ar => {
             res.send(success("Added Succesfully"))
     })
     .catch(err => {

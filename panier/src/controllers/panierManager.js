@@ -5,39 +5,53 @@ const Panier = getRepository('Panier')
 
 
 const addArticlePanier = async (req, res) => {
-    const { userid } = req.params.userid
+    const { userid } = req.params
     const { articleid } = req.body
-    Panier.findOne({userid:userid})
-    .then (res => {
-        let newarticles = res.articles.push(articleid) ;
-        Panier.update({userid : userid},{articles : newarticles})
-        .then ( panier => res.send(success("Article added to Panier succesfully", panier)))
-        .catch (err => res.send(error(err.message)) )
+
+    Panier.findOne({ userid : userid })
+    .then( panier => {
+        let newarticles = panier.articles ;
+        if (!!newarticles[articleid] )
+            newarticles[articleid]++ ;
+        else
+            newarticles[articleid] =1 ;
+        updateArticlesPanier(userid,newarticles,res)
     })
-    .catch (res =>res.send(error(err.message)))      
+    .catch(err => {
+        res.send(error("Panier or User doesn't exist",err))
+    })
 }
 
+const updateArticlesPanier = async (userid,newarticles,res) =>{
+    Panier.update({userid : userid},{articles : newarticles})
+    .then ( panier => res.send(success("Panier updated succesfully", panier)))
+    .catch ( err => res.send(error(err.message)) )
+}
+
+
+
 const deleteArticlePanier = async (req, res) => {
-    const { userid } = req.params.userid
+    const { userid } = req.params
     const { articleid } = req.body
+
     Panier.findOne({userid:userid})
-    .then (res => {
-        let newarticles = res.articles (articleid) ;
-        var index = res.articles.indexOf(articleid);
-        if (index > -1) {
-          newarticles.splice(index, 1);
-        }
-        Panier.update({userid : userid},{articles : newarticles})
-        .then ( panier => res.send(success("Article deleted from Panier succesfully", panier)))
-        .catch (err => res.send(error(err.message)) )
+    .then (panier => {
+        let newarticles = panier.articles ;
+        if (!!newarticles[articleid] )
+            newarticles[articleid]-- ;
+            if (!newarticles[articleid])
+                delete newarticles[articleid];
+        else
+            newarticles[articleid] =1 ;
+        console.log()
+        updateArticlesPanier(userid,newarticles,res)
     })
-    .catch (res =>res.send(error(err.message)))      
+    .catch (err =>res.send(error(err.message)))      
 }
 
 const verifExistUser= async id => {
     return true
 }
-
 
 const deletePanier = async (req, res) => {
     const { userid } = req.body;
@@ -57,27 +71,29 @@ const deletePanier = async (req, res) => {
 }
 
 const getPanier = async (req, res) => {
-    const { userid } = req.params.userid;
-
+    const { userid } = req.params;
     Panier.findOne({ userid : userid })
-    .then(panier => {
-            res.send(success(panier))
+    .then( panier => {
+            if (!!panier)
+                res.send(success("le panier : " , panier))
+            else
+                PromiseRejectionEvent.call() 
     })
     .catch(err => {
-        res.send(error("Panier or User doesn't exist"))
+        res.send(error("Panier or User doesn't exist",err))
     })
 }
 
 const addPanier = async (req, res) => {
-    const { userid , articles } = req.body;
+    const { userid , articles } = req.body 
     var userExists = await verifExistUser(userid) ;
     if (!userid || !userExists) {
         res.status(400).send(error("invalid userId : " + JSON.stringify(req.body)))
     }
     else {
-        Panier.add({ userid : userid , articles : articles })
+        Panier.insert({ userid : userid , articles : articles || {} })
         .then(panier => {
-                res.send(success("Added Succesfully"))
+                res.send(success("Added Succesfully",panier))
         })
         .catch(err => {
             res.send(error("Unexpected Error occured : " + err.toString()))
