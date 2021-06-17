@@ -3,11 +3,11 @@ const { getArticle , addArticle , deleteArticle , getArticles} = require('../con
 
 const router = Router()
 
-router.get('/articles/:page', getArticles)
-router.get('/articles', getArticles)
-router.post('/article/add', addArticle)
-router.delete('/article/delete/:id', deleteArticle)
-router.get('/article/:id', getArticle)
+router.get('/page/:page', getArticles)
+router.get('/all', getArticles)
+router.post('/add', addArticle)
+router.delete('/delete/:id', deleteArticle)
+router.get('/:id', getArticle)
 
 
 module.exports = router

@@ -3,10 +3,10 @@ const { getPanier , addArticlePanier , deleteArticlePanier , deletePanier , addP
 
 const router = Router()
 
-router.post('/panier/add', addPanier)
-router.delete('/panier/delete', deletePanier)
-router.get('/panier/:userid', getPanier)
-router.put('/panier/:userid/add', addArticlePanier)
-router.put('/panier/:userid/delete', deleteArticlePanier)
+router.post('/add', addPanier)
+router.delete('/delete', deletePanier)
+router.get('/:userid', getPanier)
+router.put('/:userid/add', addArticlePanier)
+router.put('/:userid/delete', deleteArticlePanier)
 
 module.exports = router
